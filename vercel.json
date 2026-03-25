@@ -5,9 +5,14 @@
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
+    },
+    {
+      "src": "backend/amoria_backend/wsgi.py",
+      "use": "@vercel/python"
     }
   ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "frontend/$1" }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "backend/amoria_backend/wsgi.py" },
+    { "src": "/(.*)", "dest": "frontend/$1" }
   ]
 }

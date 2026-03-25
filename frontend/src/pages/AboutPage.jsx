@@ -1,124 +1,118 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Heart, Sparkles, Award, Users, Quote } from 'lucide-react';
+import { Heart, Sparkles, Award, Users, Quote, ArrowRight } from 'lucide-react';
 import heroImg from '../assets/hero_wedding.png';
 
 const AboutPage = () => {
   return (
-    <div className="bg-white">
-      {/* Lighter Hero with Parallax Feel */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <motion.div 
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2 }}
-          className="absolute inset-0"
+    <div className="bg-white min-h-screen pt-32 transition-colors duration-700">
+      
+      {/* Minimalist Header */}
+      <section className="max-w-7xl mx-auto px-6 mb-40">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center"
         >
-          <img src={heroImg} className="w-full h-full object-cover opacity-10 grayscale brightness-125" alt="" />
+          <span className="text-secondary font-bold tracking-[0.5em] text-[10px] uppercase mb-10 block">Our Essence</span>
+          <h1 className="text-7xl md:text-[8rem] font-serif italic text-primary leading-none mb-12">
+            The Art of <br/> Celebration
+          </h1>
+          <div className="w-16 h-px bg-primary/20 mx-auto mb-12"></div>
+          <p className="text-text-dim text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-light">
+            Amoria was born from a simple belief: that every union is a masterpiece waiting to be unveiled. We don't just plan events; we architect legacies.
+          </p>
         </motion.div>
-        <div className="relative text-center px-6 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <Sparkles className="text-secondary w-12 h-12 mx-auto mb-10 opacity-30" />
-            <h1 className="text-7xl md:text-9xl font-serif text-primary mb-8 italic leading-tight">The Story <br/> of Amoria</h1>
-            <div className="w-24 h-0.5 bg-secondary/30 mx-auto mb-12"></div>
-            <p className="text-xl text-text-main/50 font-light leading-loose tracking-wide">
-              Founded on the passion for creating timeless celebrations that echo your unique bond. We believe every couple deserves a masterpiece.
-            </p>
-          </motion.div>
-        </div>
       </section>
 
-      {/* Philosophy Mosaic */}
-      <section className="py-40 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-32 items-center">
-        <div className="space-y-12">
-          <motion.div
-             initial={{ opacity: 0, x: -50 }}
-             whileInView={{ opacity: 1, x: 0 }}
-             viewport={{ once: true }}
-          >
-            <h2 className="text-5xl font-serif text-primary italic leading-tight mb-8">A Vision of <br/> Pure Elegance</h2>
-            <p className="text-text-main/60 leading-relaxed text-lg font-light">
-              At Amoria Weddings, we believe that every wedding is a sacred narrative. Our mission is to weave magic into every detail, transforming venues into dreamscapes and moments into memories that last generations.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-2 gap-10">
-             <motion.div 
-               whileHover={{ y: -10 }}
-               className="text-left p-10 glass-card"
-             >
-               <Award className="text-secondary w-8 h-8 mb-6" />
-               <h4 className="font-bold uppercase tracking-widest text-xs mb-2">Award Winning</h4>
-               <p className="text-[10px] text-text-main/40 leading-relaxed uppercase tracking-widest">Recognized for Excellence</p>
-             </motion.div>
-             <motion.div 
-               whileHover={{ y: -10 }}
-               className="text-left p-10 glass-card"
-             >
-               <Users className="text-secondary w-8 h-8 mb-6" />
-               <h4 className="font-bold uppercase tracking-widest text-xs mb-2">Creative Team</h4>
-               <p className="text-[10px] text-text-main/40 leading-relaxed uppercase tracking-widest">Passionate Professionals</p>
-             </motion.div>
-          </div>
-        </div>
-        
+      {/* Hero Image Section - Wide & Elegant */}
+      <section className="mx-6 md:mx-20 mb-40">
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, clipPath: 'inset(0 50% 0 50%)' }}
+          whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0%)' }}
           viewport={{ once: true }}
-          className="relative"
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          className="relative h-[80vh] rounded-[4rem] overflow-hidden shadow-premium"
         >
-           <div className="absolute inset-0 bg-primary/5 rounded-[5rem] translate-x-10 translate-y-10"></div>
-           <div className="relative rounded-[4rem] overflow-hidden shadow-premium z-10 aspect-[4/5]">
-             <img src="https://picsum.photos/1000/1200?random=50" className="w-full h-full object-cover grayscale opacity-90 transition-all hover:grayscale-0 duration-1000" alt="Team" />
-           </div>
+          <img src={heroImg} className="w-full h-full object-cover" alt="The Amoria Vision" />
+          <div className="absolute inset-0 bg-primary/5"></div>
         </motion.div>
       </section>
 
-      {/* Principles Horizontal Section */}
-      <section className="py-40 bg-bg-soft">
-        <div className="max-w-6xl mx-auto px-6">
-           <Quote className="text-primary w-16 h-16 mx-auto mb-16 opacity-10" />
-           <div className="grid md:grid-cols-3 gap-24">
-             {[
-               { title: 'Intimacy', desc: 'Focusing on the smallest gestures that make your day intimate.' },
-               { title: 'Grandeur', desc: 'Delivering scale and luxury that leaves your guests in awe.' },
-               { title: 'Flow', desc: 'Expert planning that ensures you lead your day with a smile.' }
-             ].map((principle, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 }}
-                  className="space-y-6 text-center"
-                >
-                   <h3 className="text-3xl font-serif text-primary italic">{principle.title}</h3>
-                   <div className="w-10 h-0.5 bg-secondary mx-auto"></div>
-                   <p className="text-text-main/50 text-sm font-light leading-relaxed">{principle.desc}</p>
-                </motion.div>
-             ))}
-           </div>
-        </div>
+      {/* Core Philosophy Section */}
+      <section className="max-w-7xl mx-auto px-6 py-40 grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
+         <motion.div
+           initial={{ opacity: 0, x: -50 }}
+           whileInView={{ opacity: 1, x: 0 }}
+           viewport={{ once: true }}
+           className="space-y-12"
+         >
+            <h2 className="text-5xl font-serif italic text-primary leading-tight">
+               Crafting magic <br/> through meticulous <br/> dedication.
+            </h2>
+            <p className="text-text-dim text-lg leading-relaxed">
+               Our approach combines the precision of architecture with the soul of a poet. Every texture, every light beam, and every floral choice is curated to evoke an atmosphere of pure enchantment.
+            </p>
+            <div className="pt-10 flex gap-16">
+               <div className="space-y-4">
+                  <span className="text-primary text-4xl font-serif italic">12+</span>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-text-dim">Global Awards</p>
+               </div>
+               <div className="space-y-4">
+                  <span className="text-primary text-4xl font-serif italic">500+</span>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-text-dim">Love Stories</p>
+               </div>
+            </div>
+         </motion.div>
+
+         <div className="grid grid-cols-2 gap-8">
+            <motion.div 
+               whileHover={{ scale: 1.02 }}
+               className="aspect-[3/4] rounded-3xl overflow-hidden shadow-lg mt-20"
+            >
+               <img src="https://picsum.photos/600/800?random=1" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
+            </motion.div>
+            <motion.div 
+               whileHover={{ scale: 1.02 }}
+               className="aspect-[3/4] rounded-3xl overflow-hidden shadow-lg"
+            >
+               <img src="https://picsum.photos/600/800?random=2" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
+            </motion.div>
+         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-40 text-center">
+      {/* Quote Section - Minimalist White */}
+      <section className="py-60 bg-bg-soft text-center px-6">
          <motion.div
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
            viewport={{ once: true }}
+           className="max-w-4xl mx-auto"
          >
-           <Heart className="text-secondary w-12 h-12 mx-auto mb-10 opacity-30" />
-           <h2 className="text-6xl font-serif text-primary italic mb-12">Let's Create Your Legacy</h2>
-           <Link to="/booking" className="btn-primary !px-16 !py-5">Start Your Journey</Link>
+            <Quote className="text-primary w-12 h-12 mx-auto mb-16 opacity-20" />
+            <p className="text-3xl md:text-5xl font-serif italic text-primary leading-relaxed mb-16">
+               "Elegance is not about being noticed, it's about being remembered."
+            </p>
+            <div className="w-16 h-px bg-primary/20 mx-auto"></div>
          </motion.div>
       </section>
+
+      {/* Footer CTA */}
+      <section className="py-40 text-center">
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+         >
+            <Heart className="w-10 h-10 text-secondary mx-auto mb-10 opacity-40" />
+            <h2 className="text-5xl font-serif italic text-primary mb-12">Begin Your Chapter</h2>
+            <a href="/booking" className="btn-primary flex items-center gap-4 mx-auto w-fit">
+               Start Planning <ArrowRight size={16} />
+            </a>
+         </motion.div>
+      </section>
+
     </div>
   );
 };

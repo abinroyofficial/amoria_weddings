@@ -39,18 +39,18 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         {/* Custom 3-Star Logo - 2 Small Left, 1 Big Right, Rotating, Viouler */}
         <Link to="/" className="flex items-center group">
-          <div className="flex items-center gap-1.5 px-3 py-2 rounded-2xl transition-all duration-500 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(124,102,185,0.2)]">
+          <div className="flex items-center gap-1.5 px-3 py-2 transition-all duration-500">
             <div className="flex flex-col items-end gap-1">
-              <Sparkles className="w-2.5 h-2.5 text-viouler animate-float-fast opacity-40 group-hover:opacity-100 group-hover:text-white transition-all" />
-              <Sparkles className="w-4 h-4 text-viouler animate-float-slow opacity-60 group-hover:opacity-100 group-hover:text-white transition-all" />
+              <Sparkles className="w-2.5 h-2.5 text-viouler animate-float-fast opacity-40 group-hover:opacity-100 group-hover:text-white transition-all shadow-none" />
+              <Sparkles className="w-4 h-4 text-viouler animate-float-slow opacity-60 group-hover:opacity-100 group-hover:text-white transition-all shadow-none" />
             </div>
             <motion.div
               animate={{ 
-                filter: ["drop-shadow(0 0 5px rgba(124,102,185,0.3))", "drop-shadow(0 0 15px rgba(124,102,185,0.6))", "drop-shadow(0 0 5px rgba(124,102,185,0.3))"]
+                filter: ["drop-shadow(0 0 5px rgba(124,102,185,0.1))", "drop-shadow(0 0.1px 8px rgba(124,102,185,0.3))", "drop-shadow(0 0 5px rgba(124,102,185,0.1))"]
               }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <Sparkles className="w-10 h-10 text-viouler animate-spin-slow group-hover:text-white transition-all drop-shadow-lg" />
+              <Sparkles className="w-10 h-10 text-viouler animate-spin-slow group-hover:text-white transition-all drop-shadow-none" />
             </motion.div>
           </div>
         </Link>
@@ -66,19 +66,8 @@ const Navbar = () => {
               } hover:!text-viouler`}
             >
               {link.name}
-              {location.pathname === link.path && (
-                <motion.div 
-                  layoutId="nav-underline"
-                  className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary"
-                />
-              )}
             </Link>
           ))}
-          <Link to="/booking" className={`btn-primary !py-2.5 !px-8 text-[10px] shadow-lg hover:shadow-primary/20 ${
-            !scrolled && 'bg-primary text-white hover:bg-viouler'
-          }`}>
-            Book Now
-          </Link>
         </div>
 
         {/* Mobile Toggle */}
@@ -109,7 +98,6 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <Link to="/booking" className="btn-primary text-center">Inquire Now</Link>
             </div>
           </motion.div>
         )}

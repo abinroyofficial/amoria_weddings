@@ -1,105 +1,124 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { CheckCircle, Sparkles, Heart, ArrowRight, Star } from 'lucide-react';
 import decoImg from '../assets/decoration.png';
 import floralImg from '../assets/floral.png';
 import stageImg from '../assets/stage.png';
 import planningImg from '../assets/planning.png';
-import { CheckCircle, Sparkles, Heart } from 'lucide-react';
 
 const ServicesPage = () => {
   const services = [
     {
       title: 'Bespoke Decoration',
       img: decoImg,
-      category: 'Decoration',
-      desc: 'Elegant themes tailored to your venue, incorporating premium fabrics, lighting, and custom props.',
-      features: ['Theme Consultation', 'Lighting Design', 'Tableau Setup', 'Custom Drapery']
+      category: 'Art & Design',
+      desc: 'We transform spaces into ethereal dreamscapes using custom-built installations, premium textiles, and immersive lighting.',
+      features: ['Architectural Lighting', 'Custom Drapery', 'Set Design', 'Thematic Decor']
     },
     {
-      title: 'Floral Artistry',
+      title: 'Exquisite Florals',
       img: floralImg,
-      category: 'Florals',
-      desc: 'Fresh and exotic floral arrangements that breathe life into your wedding ceremony and reception.',
-      features: ['Bridal Bouquets', 'Mandap/Altar Florals', 'Centerpieces', 'Aisle Decoration']
+      category: 'Botanical Art',
+      desc: 'Our master florists curate rare and exotic blooms to create living tapestries of color and scent.',
+      features: ['Rare Bloom Sourcing', 'Sculptural Centerpieces', 'Floral Installations', 'Bouquet Artistry']
     },
     {
       title: 'Signature Stages',
       img: stageImg,
-      category: 'Signature',
-      desc: 'Grand stage designs that serve as the perfect backdrop for your most precious photos.',
-      features: ['3D Stage Visuals', 'LED Screens', 'Floral Backdrops', 'Furniture Selection']
+      category: 'Centerpiece',
+      desc: 'Grand, high-impact stages designed with 3D visuals and bespoke furniture to anchor your celebration.',
+      features: ['3D Visual Mapping', 'Kinetic Structures', 'Luxury Furniture', 'Integrated LED']
     },
     {
-      title: 'Full Event Management',
+      title: 'Total Management',
       img: planningImg,
-      category: 'Management',
-      desc: 'End-to-end wedding management so you can enjoy every moment without stress.',
-      features: ['Vendor Management', 'Timeline Coordination', 'Guest Hospitality', 'Budget Control']
+      category: 'Coordination',
+      desc: 'End-to-end orchestration of your wedding journey, ensuring every detail is executed with silent precision.',
+      features: ['Vendor Curation', 'Timeline Architecture', 'Concierge Service', 'Protocol Management']
     }
   ];
 
   return (
-    <div className="pt-48 pb-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-32"
+    <div className="bg-white min-h-screen pt-32 transition-colors duration-700">
+      
+      {/* Services Header */}
+      <section className="max-w-7xl mx-auto px-6 mb-40 text-center">
+        <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1 }}
         >
-          <Sparkles className="text-secondary w-12 h-12 mx-auto mb-8 opacity-50" />
-          <h1 className="text-6xl md:text-8xl font-serif text-primary mb-8 italic leading-tight">Exquisite Offerings</h1>
-          <p className="text-text-main/40 max-w-2xl mx-auto uppercase tracking-[0.4em] text-xs font-bold">
-            Curating every detail of your luxury wedding experience
-          </p>
+           <span className="text-secondary font-bold tracking-[0.6em] text-[10px] uppercase mb-10 block">Our Capabilities</span>
+           <h1 className="text-7xl md:text-[9rem] font-serif italic text-primary leading-tight mb-12">
+             The Collection
+           </h1>
+           <div className="w-16 h-px bg-primary/20 mx-auto"></div>
         </motion.div>
+      </section>
 
-        <div className="space-y-48">
-          {services.map((service, idx) => (
-            <motion.div 
-              key={idx}
-              initial={{ opacity: 0, y: 80 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-24 items-center`}
-            >
-              <div className="w-full md:w-3/5">
-                <div className="group relative overflow-hidden rounded-[4rem] shadow-premium">
-                  <div className="aspect-[16/10] overflow-hidden">
-                     <img src={service.img} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-                  </div>
-                  <div className="absolute top-10 left-10 bg-white/90 backdrop-blur-md text-primary px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl">
-                    {service.category}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="w-full md:w-2/5 space-y-10">
-                <Heart className="text-secondary w-8 h-8 opacity-30" />
-                <h2 className="text-5xl font-serif text-primary tracking-tight leading-tight italic">{service.title}</h2>
-                <p className="text-text-main/60 text-lg leading-relaxed font-light">
-                  {service.desc}
-                </p>
-                
-                <div className="grid grid-cols-1 gap-5">
-                  {service.features.map((feature, fidx) => (
-                    <div key={fidx} className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-text-main/40">
-                      <div className="w-1.5 h-1.5 bg-secondary rounded-full"></div>
-                      {feature}
-                    </div>
-                  ))}
+      {/* Services Grid */}
+      <section className="max-w-7xl mx-auto px-6 pb-60">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-40">
+           {services.map((service, idx) => (
+             <motion.div
+               key={idx}
+               initial={{ opacity: 0, y: 60 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true, margin: "-100px" }}
+               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+               className="group"
+             >
+                <div className="relative aspect-[16/10] mb-12 rounded-[3.5rem] overflow-hidden shadow-premium group-hover:shadow-2xl transition-all duration-700">
+                   <img src={service.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="" />
+                   <div className="absolute top-10 right-10 flex items-center gap-4 bg-white/80 backdrop-blur-md px-6 py-3 rounded-full shadow-lg">
+                      <Star className="w-3 h-3 text-secondary fill-secondary" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary italic">{service.category}</span>
+                   </div>
                 </div>
                 
-                <div className="pt-8">
-                  <a href="/booking" className="btn-primary !px-16 !bg-transparent border-2 border-primary/20 !text-primary hover:!bg-primary hover:!text-white">
-                    Inquire Now
-                  </a>
+                <div className="px-6 space-y-8">
+                   <h3 className="text-4xl md:text-5xl font-serif italic text-primary">{service.title}</h3>
+                   <p className="text-text-dim text-lg leading-relaxed max-w-md font-light">
+                      {service.desc}
+                   </p>
+                   
+                   <ul className="grid grid-cols-2 gap-4 pt-4">
+                      {service.features.map((f, fi) => (
+                        <li key={fi} className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-text-dim">
+                           <div className="w-1.5 h-1.5 bg-secondary rounded-full"></div>
+                           {f}
+                        </li>
+                      ))}
+                   </ul>
+
+                   <div className="pt-8">
+                      <a href="/booking" className="inline-flex items-center gap-4 group/btn">
+                         <span className="text-xs font-bold uppercase tracking-[0.3em] border-b-2 border-primary/10 pb-1 group-hover/btn:border-primary transition-all">Explore Philosophy</span>
+                         <ArrowRight size={14} className="group-hover/btn:translate-x-2 transition-transform" />
+                      </a>
+                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+             </motion.div>
+           ))}
         </div>
-      </div>
+      </section>
+
+      {/* Testimonial / Philosophy Footer */}
+      <section className="py-60 bg-bg-soft text-center px-6">
+         <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+         >
+            <Sparkles className="text-primary w-12 h-12 mx-auto mb-16 opacity-30 animate-pulse" />
+            <h2 className="text-4xl md:text-6xl font-serif italic text-primary leading-tight mb-16">
+               "We orchestrate moments of <br/> profound elegance."
+            </h2>
+            <a href="/booking" className="btn-primary">Reserve Your Date</a>
+         </motion.div>
+      </section>
+
     </div>
   );
 };

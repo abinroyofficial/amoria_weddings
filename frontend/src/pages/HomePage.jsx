@@ -1,320 +1,296 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles, Calendar, Heart, ArrowRight, Play, Quote } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { Play, Volume2, VolumeX, Heart, Quote, ChevronDown, Sparkles, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import decoImg from '../assets/decoration.png';
-import floralImg from '../assets/floral.png';
-import stageImg from '../assets/stage.png';
+import api from '../api/axios';
 
 const HomePage = () => {
-  const services = [
-    { title: 'Bespoke Decoration', img: decoImg, desc: 'Tailored themes that reflect your unique love story.' },
-    { title: 'Exquisite Florals', img: floralImg, desc: 'Fresh, vibrant arrangements curated by master florists.' },
-    { title: 'Signature Stages', img: stageImg, desc: 'Grand setups designed to be the centerpiece of your day.' },
-  ];
+  const [heroVideo, setHeroVideo] = useState(null);
+  const [nextVideo, setNextVideo] = useState(null);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [services, setServices] = useState([]);
+  const [isMuted, setIsMuted] = useState(true);
+  const containerRef = useRef(null);
 
-  const revealVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
-  };
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const galleryRes = await api.get('gallery/');
+        setGalleryItems(galleryRes.data);
+        const hero = galleryRes.data.find(item => item.is_hero) || galleryRes.data[0];
+        const next = galleryRes.data.find(item => !item.is_hero) || galleryRes.data[1];
+        setHeroVideo(hero);
+        setNextVideo(next);
+
+        const servicesRes = await api.get('services/');
+        setServices(servicesRes.data.filter(s => s.is_featured).slice(0, 3));
+      } catch (err) {
+        console.error("Failed to fetch data:", err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const toggleSound = () => {
+    const video = document.querySelector('video');
+    if (video) {
+      if (isMuted) {
+        video.muted = false;
+        video.play().catch(e => console.log("Audio play blocked", e));
+      } else {
+        video.muted = true;
       }
     }
+    setIsMuted(!isMuted);
+  };
+
+  const motto = "We turn your dreams into unforgettable memories";
+  const characters = motto.split("");
+
+  const handleNextVideo = () => {
+    if (!galleryItems.length) return;
+    const currentIdx = galleryItems.findIndex(v => v.id === heroVideo?.id);
+    const nextIdx = (currentIdx + 1) % galleryItems.length;
+    const nextNextIdx = (currentIdx + 2) % galleryItems.length;
+    setHeroVideo(galleryItems[nextIdx]);
+    setNextVideo(galleryItems[nextNextIdx]);
   };
 
   return (
-    <div className="overflow-hidden bg-white">
-      {/* Hero Section with Video */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          {/* High-quality wedding video placeholder */}
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="w-full h-full object-cover scale-105 brightness-75"
-          >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-wedding-rings-on-a-table-41614-large.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-white/95"></div>
-        </div>
-        
-        <div className="relative z-10 text-center px-6 max-w-5xl">
-          <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="flex justify-center mb-8"
-            >
-              <Sparkles className="text-secondary w-20 h-20 animate-spin-slow text-viouler drop-shadow-[0_0_15px_rgba(122,101,177,0.5)]" />
-            </motion.div>
-            
-            <h1 className="text-6xl md:text-8xl font-sans font-extrabold mb-6 tracking-tight text-white leading-[1.1]">
-              Crafting <span className="italic font-serif font-light text-secondary">Memories</span>, <br/> 
-              Celebrating Love.
-            </h1>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1, duration: 0.8 }}
-              className="flex items-center gap-4 justify-center mb-10"
-            >
-              <div className="h-[1px] w-12 bg-white/30"></div>
-              <span className="text-xs font-bold uppercase tracking-[0.4em] text-white/70">Luxury Event Management</span>
-              <div className="h-[1px] w-12 bg-white/30"></div>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="flex flex-col md:flex-row gap-8 justify-center items-center"
-            >
-              <Link to="/booking" className="btn-gold !px-12 !py-5 shadow-2xl hover:bg-white hover:text-primary min-w-[200px]">
-                Plan Your Wedding
-              </Link>
-              <Link to="/gallery" className="btn-outline !text-white !border-white/40 hover:!bg-white hover:!text-primary transition-all">
-                Explore Portfolio
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
+    <div ref={containerRef} className="home-page relative bg-[#0A0A0B] text-white min-h-screen selection:bg-viouler/30 overflow-x-hidden">
 
-        {/* Story Reel Overlay - WAC Inspired */}
-        <motion.div 
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-12 right-12 z-20 hidden lg:flex items-center gap-6 bg-black/20 backdrop-blur-xl p-4 rounded-3xl border border-white/10 group cursor-pointer hover:bg-black/40 transition-all shadow-2xl"
-        >
-          <div className="relative w-24 h-16 rounded-xl overflow-hidden shadow-premium">
-            <img src="https://picsum.photos/400/300?wedding=1" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Reel" />
-            <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
-              <Play fill="white" size={16} className="text-white" />
-            </div>
-          </div>
-          <div className="pr-6">
-            <span className="block text-[10px] uppercase tracking-widest text-white/50 mb-1">Next Up</span>
-            <h4 className="text-sm font-bold text-white mb-2">Signature Story Reel</h4>
-            <div className="w-32 h-0.5 bg-white/10 rounded-full overflow-hidden">
-               <motion.div 
-                 animate={{ width: ["0%", "100%"] }} 
-                 transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                 className="h-full bg-secondary"
-               />
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Floating Scroll Indicator */}
-        <motion.div 
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2"
-        >
-          <span className="text-[10px] uppercase tracking-widest font-bold">Scroll</span>
-          <div className="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
-        </motion.div>
-      </section>
-
-      {/* Services Overview with Staggered Entrance */}
-      <motion.section 
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        className="py-32 bg-white"
-      >
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div variants={revealVariants} className="text-center mb-24">
-            <h2 className="section-title">Our Exquisite Offerings</h2>
-            <div className="w-24 h-1 bg-secondary mx-auto mb-8 rounded-full"></div>
-            <p className="text-text-main/40 max-w-2xl mx-auto text-lg uppercase tracking-[0.2em] font-medium">
-              Curating every detail of your luxury wedding experience
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-            {services.map((service, idx) => (
-              <motion.div
-                key={idx}
-                variants={revealVariants}
-                className="group relative"
-              >
-                <div className="aspect-[3/4] overflow-hidden rounded-[3rem] shadow-premium mb-8 relative">
-                  <img src={service.img} alt={service.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                  <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="w-20 h-20 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white scale-75 group-hover:scale-100 transition-transform duration-500">
-                       <Play fill="white" size={24} />
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-3xl font-serif mb-4 tracking-tight text-primary italic">{service.title}</h3>
-                  <p className="text-text-main/50 text-sm mb-6 leading-relaxed px-4">{service.desc}</p>
-                  <Link to="/services" className="inline-block border-b-2 border-secondary/30 pb-1 text-xs font-bold uppercase tracking-widest hover:border-secondary transition-all">
-                    Explore Details
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Immersive Video Session Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="w-full h-full object-cover brightness-50"
-          >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-wedding-rings-with-diamonds-41619-large.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+      {/* Scroll Indicator (WAC Style) */}
+      <div className="fixed left-8 top-1/2 -translate-y-1/2 z-50 hidden xl:flex flex-col items-center gap-4">
+        <span className="text-[9px] uppercase tracking-[0.4em] font-bold vertical-text opacity-20">Scroll</span>
+        <div className="w-[1px] h-32 bg-white/5 relative overflow-hidden">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="glass-card !bg-white/5 !backdrop-blur-3xl !border-white/10 p-16 md:p-24"
+            style={{ scaleY: smoothProgress, transformOrigin: 'top' }}
+            className="absolute inset-0 bg-viouler shadow-[0_0_10px_#9D8CCF]"
+          />
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative h-[100vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted={isMuted}
+            playsInline
+            key={heroVideo?.video_url}
+            className="w-full h-full object-cover brightness-[0.5] scale-105"
           >
-            <Sparkles className="w-16 h-16 text-secondary mx-auto mb-10 animate-glow-pulse" />
-            <h2 className="text-4xl md:text-6xl font-serif italic text-white mb-10 leading-tight">
-              Where your <span className="text-secondary">ever after</span> begins with elegance.
-            </h2>
-            <Link to="/about" className="btn-primary !bg-white !text-primary hover:!bg-secondary hover:!text-white">
-              Discover Our Story
-            </Link>
+            <source src={heroVideo?.video_url || "https://cdn.pixabay.com/video/2024/03/20/204803-925552205_large.mp4"} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-[#0A0A0B]"></div>
+        </div>
+
+        <div className="relative z-10 text-center px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h1 className="text-7xl md:text-[10rem] font-serif italic mb-6 tracking-tighter leading-none text-white drop-shadow-2xl">
+              Amoria Weddings
+            </h1>
+            <p className="text-white/30 uppercase tracking-[1em] text-[10px] md:text-xs font-bold mb-16 max-w-xl mx-auto">
+              Architects of Timeless Celebration
+            </p>
+
+            <div className="flex flex-col items-center gap-8">
+              <button
+                onClick={toggleSound}
+                className="flex flex-col items-center gap-4 group"
+              >
+                <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-white backdrop-blur-2xl group-hover:bg-white/5 transition-all">
+                  {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </div>
+                  <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-white/40 group-hover:text-white transition-all">
+                    {isMuted ? "Unmute Audio" : "Sound Enabled"}
+                  </span>
+              </button>
+            </div>
           </motion.div>
         </div>
-      </section>
 
-      {/* Stats Section - Premium Light Look */}
-      <section className="py-32 bg-bg-soft relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -mr-48 -mt-48 blur-3xl"></div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-          {[
-            { label: 'Weddings', val: '500+' },
-            { label: 'Exotic Locales', val: '24' },
-            { label: 'Awards', val: '12' },
-            { label: 'Guests Served', val: '10k+' }
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-8 glass-card !rounded-[2.5rem]"
-            >
-              <span className="text-5xl font-serif block mb-3 text-primary italic">{stat.val}</span>
-              <span className="text-text-main/40 uppercase tracking-widest text-[10px] font-bold">{stat.label}</span>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Featured Gallery - WAC Inspired Mosaic */}
-      <section className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <motion.div variants={revealVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-               <h2 className="text-6xl font-serif text-primary italic leading-tight">Witness the <br/> Amoria Magic</h2>
-            </motion.div>
-            <Link to="/gallery" className="btn-primary !bg-white !text-primary border border-primary/10 hover:!bg-primary hover:!text-white mb-4">
-               View Full Archive
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[1,2,3,4,5,6,7,8].map(i => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className={`group relative overflow-hidden rounded-[2rem] shadow-lg ${
-                  i === 2 || i === 5 ? 'md:row-span-2 aspect-[4/5]' : 'aspect-square'
-                }`}
-              >
-                <img src={`https://picsum.photos/800/800?random=${i+20}`} alt="wedding" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6 text-white">
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-secondary mb-1">Elegance</span>
-                    <h4 className="font-serif italic text-lg leading-tight">Moment of Bliss</h4>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Philosophy / Quote Section */}
-      <section className="py-40 bg-primary text-white text-center relative overflow-hidden">
-        <Quote className="absolute top-1/2 left-10 -translate-y-1/2 w-96 h-96 opacity-5 rotate-12" />
-        <div className="max-w-4xl mx-auto px-6 relative z-10">
-           <motion.div
-             initial={{ opacity: 0, y: 30 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-           >
-             <Heart className="text-secondary w-16 h-16 mx-auto mb-12 opacity-50" />
-             <p className="text-4xl md:text-6xl font-serif italic leading-tight mb-12">
-               "We don't just plan weddings; we curate the first chapter of your legacy."
-             </p>
-             <div className="w-20 h-0.5 bg-secondary mx-auto mb-8"></div>
-             <h4 className="font-bold tracking-[0.4em] uppercase text-xs text-white/60">The Amoria Philosophy</h4>
-           </motion.div>
-        </div>
-      </section>
-
-      {/* Testimonials - Premium Carousel Look */}
-      <section className="py-32 bg-white">
-        <div className="max-w-4xl mx-auto px-6 overflow-hidden">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+        {/* WAC Next Video Box */}
+        {nextVideo && (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="text-center"
+            className="absolute bottom-10 right-32 z-20 hidden md:block"
           >
-            <div className="inline-flex items-center gap-4 mb-12 py-2 px-6 rounded-full bg-bg-soft border border-primary/5">
-               <div className="flex -space-x-3">
-                  {[1,2,3].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} className="w-10 h-10 rounded-full border-2 border-white shadow-sm" alt="" />)}
-               </div>
-               <span className="text-[10px] font-bold uppercase tracking-widest text-text-main/60">Loved by 500+ Couples</span>
+            <div
+              onClick={handleNextVideo}
+              className="glass-card !bg-black/60 !rounded-xl p-4 flex items-center gap-5 border-white/10 hover:border-white/30 transition-all cursor-pointer group w-64 h-20"
+            >
+              <div className="w-12 h-12 rounded-lg overflow-hidden relative flex-shrink-0">
+                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+                  <Play size={12} className="text-white fill-white" />
+                </div>
+                <video muted loop autoPlay className="w-full h-full object-cover">
+                  <source src={nextVideo.video_url} type="video/mp4" />
+                </video>
+              </div>
+              <div className="flex-grow">
+                <span className="text-[8px] uppercase tracking-widest text-white/30 block mb-0.5">Next Reel</span>
+                <p className="text-[10px] font-bold text-white uppercase tracking-wider line-clamp-1">{nextVideo.title}</p>
+              </div>
+              <ArrowRight size={14} className="text-white/20 group-hover:text-white group-hover:translate-x-1 transition-all" />
             </div>
-            
-            <div className="relative">
-               <p className="text-3xl md:text-4xl font-serif text-primary italic leading-relaxed mb-12">
-                 "Every petal, every light, every smile... Amoria made our day transcend reality. It was more than a wedding; it was a cosmic celebration of our love."
-               </p>
-               <h4 className="text-text-main font-bold tracking-widest uppercase text-sm">— Sophia & Alessandro</h4>
-               <span className="text-text-main/40 text-xs">Umaid Bhawan Palace, Jodhpur</span>
-            </div>
+          </motion.div>
+        )}
+
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/10"
+        >
+          <ChevronDown size={28} />
+        </motion.div>
+      </section>
+
+      {/* Motto Reveal Section - Stabilized (250vh) */}
+      <section className="relative h-[250vh] bg-[#0A0A0B]">
+        <div className="sticky top-0 h-screen flex items-center justify-center px-6">
+          <h2 className="text-3xl md:text-6xl font-serif text-center max-w-5xl leading-tight tracking-tight">
+            {characters.map((char, i) => (
+              <MottoChar
+                key={i}
+                char={char}
+                index={i}
+                total={characters.length}
+                progress={scrollYProgress}
+              />
+            ))}
+          </h2>
+        </div>
+      </section>
+
+      {/* Services Section - Stabilized (400vh) */}
+      <PinnedServices progress={scrollYProgress} services={services} />
+
+      {/* Final Section */}
+      <section className="relative py-60 bg-[#0A0A0B] text-white text-center">
+        <div className="max-w-3xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <Sparkles className="w-12 h-12 text-[#E2CF7C] mx-auto mb-12 opacity-30" />
+            <p className="text-4xl md:text-5xl font-serif italic leading-tight mb-16 text-white/90">
+              Crafting Timeless <br /> Legacies Together.
+            </p>
+            <Link to="/booking" className="inline-block text-[10px] font-bold uppercase tracking-[0.6em] text-[#E2CF7C] border-b border-[#E2CF7C]/30 pb-3 hover:text-white transition-all">
+              The Journey Begins
+            </Link>
           </motion.div>
         </div>
       </section>
     </div>
+  );
+};
+
+const MottoChar = ({ char, index, total, progress }) => {
+  // Balanced range (0.15 to 0.35) for a ~1000vh page
+  const start = 0.1 + (index / total) * 0.2;
+  const end = start + 0.03;
+  const color = useTransform(progress, [start, end], ["#FFFFFF", "#9D8CCF"]);
+  const y = useTransform(progress, [start, end], [10, 0]);
+  const opacity = useTransform(progress, [start, end], [0.2, 1]);
+
+  return (
+    <motion.span style={{ color, y, opacity }} className="inline-block">
+      {char === " " ? "\u00A0" : char}
+    </motion.span>
+  );
+};
+
+const PinnedServices = ({ progress, services }) => {
+  // Mega-range for granular steps [0.4, 0.95]
+  // Indices mapping based on progress
+  const activeIndex = useTransform(progress, [0.35, 0.5, 0.65, 0.8], [0, 0, 1, 2]);
+  
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  useEffect(() => {
+    const unsubIdx = activeIndex.onChange(v => setCurrentIdx(Math.floor(v)));
+    return () => unsubIdx();
+  }, [activeIndex]);
+
+  if (services.length === 0) return null;
+
+  return (
+    <section className="relative h-[450vh] bg-[#0A0A0B] border-y border-white/5">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6 overflow-hidden">
+        
+        <div className="relative w-full max-w-6xl text-center">
+          <motion.div
+            key={currentIdx + '-bg'}
+            initial={{ opacity: 0, scale: 0.9, filter: 'blur(50px)' }}
+            animate={{ opacity: 0.04, scale: 1, filter: 'blur(0px)' }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif italic text-white/5 pointer-events-none whitespace-nowrap"
+          >
+            {services[currentIdx].name.split(" ")[0]}
+          </motion.div>
+
+          <div className="relative z-10 flex flex-col items-center">
+            <div className="relative h-[400px] flex items-center justify-center w-full">
+              {services.map((s, i) => (
+                <div key={i} className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                  <motion.h3
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{
+                      opacity: currentIdx === i ? 1 : 0,
+                      y: currentIdx === i ? 0 : 30,
+                      scale: currentIdx === i ? 1 : 0.95,
+                    }}
+                    transition={{ duration: 0.8 }}
+                    className="text-6xl md:text-9xl font-serif italic text-white mb-10 tracking-tighter leading-none"
+                  >
+                    {s.name}
+                  </motion.h3>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: currentIdx === i ? 1 : 0,
+                      y: currentIdx === i ? 0 : 20,
+                    }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="text-white/50 text-base md:text-xl font-light tracking-wide max-w-2xl mx-auto leading-relaxed"
+                  >
+                    {s.description}
+                  </motion.p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Indicator Lines */}
+        <div className="absolute bottom-16 flex gap-4">
+          {services.map((_, i) => (
+            <div key={i} className={`h-[1px] w-16 transition-all duration-700 ${currentIdx === i ? 'bg-[#E2CF7C] w-32' : 'bg-white/10'}`}></div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

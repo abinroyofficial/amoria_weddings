@@ -1,32 +1,55 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #7C66B9;
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --color-viouler: #6A54A1;
-  --color-secondary: #D4BD6A;
-  --color-accent-gold: #E2CF7C;
-  --color-bg-soft: #EDEDF0;
-  --color-text-main: #1D1D1F;
+  --color-bg-main: var(--bg-main);
+  --color-bg-soft: var(--bg-soft);
+  --color-text-main: var(--text-main);
+  --color-text-dim: var(--text-dim);
+  --color-border: var(--border);
   
-  --shadow-premium: 0 20px 50px rgba(157, 140, 207, 0.1);
+  --shadow-premium: var(--shadow);
   --font-serif: "Playfair Display", serif;
   --font-sans: "Poppins", sans-serif;
 }
 
 :root {
+  --primary: #7C66B9;
+  --secondary: #D4BD6A;
+  --bg-main: #FFFFFF;
+  --bg-soft: #EDEDF0;
+  --text-main: #1D1D1F;
+  --text-dim: rgba(29, 29, 31, 0.4);
   --border: rgba(157, 140, 207, 0.15);
+  --shadow: 0 20px 50px rgba(157, 140, 207, 0.1);
+}
+
+/* Home Page specific (Dark Mode) */
+.home-page {
+  --primary: #9D8CCF;
+  --secondary: #E2CF7C;
+  --bg-main: #0A0A0B;
+  --bg-soft: #161618;
+  --text-main: #F5F5F7;
+  --text-dim: rgba(245, 245, 247, 0.4);
+  --border: rgba(157, 140, 207, 0.1);
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  background-color: var(--bg-main);
+  color: var(--text-main);
 }
 
 @layer base {
   body {
-    @apply bg-white text-text-main font-sans antialiased selection:bg-primary/20;
+    @apply bg-bg-main text-text-main font-sans antialiased selection:bg-primary/20 transition-colors duration-700;
     scroll-behavior: smooth;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-white/70 backdrop-blur-2xl border border-white/40 shadow-premium rounded-[2rem];
+    @apply bg-bg-main/70 backdrop-blur-2xl border border-white/10 shadow-premium rounded-[2rem];
   }
   
   .section-title {
@@ -43,57 +66,20 @@
   
   .nav-link {
     @apply text-sm font-bold uppercase tracking-widest text-primary hover:text-viouler transition-all relative;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.05);
   }
   
-  .hero-text-shadow {
-    text-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  }
-
   .btn-outline {
     @apply px-10 py-4 border-2 border-primary text-primary font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all rounded-full;
   }
 
-  .glow-viouler {
-    filter: drop-shadow(0 0 10px rgba(106, 84, 161, 0.5));
+  /* Custom Wedding Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
   }
-
-  @keyframes float-slow {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-8px) rotate(5deg); }
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-soft;
   }
-
-  @keyframes float-fast {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-4px) rotate(-10deg); }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full hover:bg-primary/50;
   }
-
-  @keyframes glow-pulse {
-    0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 5px rgba(106, 84, 161, 0.4)); }
-    50% { opacity: 1; filter: drop-shadow(0 0 15px rgba(106, 84, 161, 0.8)); }
-  }
-
-  .animate-float-slow { animation: float-slow 4s ease-in-out infinite; }
-  .animate-float-fast { animation: float-fast 3s ease-in-out infinite; }
-  .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
-
-  @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .animate-spin-slow {
-    animation: spin-slow 12s linear infinite;
-  }
-}
-
-/* Custom Wedding Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  @apply bg-bg-soft;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full hover:bg-primary/50;
 }

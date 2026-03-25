@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import GalleryItem
 
-# Register your models here.
+@admin.register(GalleryItem)
+class GalleryItemAdmin(admin.ModelAdmin):
+    list_display = ('title', 'tag', 'is_hero', 'created_at')
+    list_filter = ('tag', 'is_hero')

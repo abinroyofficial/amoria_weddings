@@ -9,6 +9,7 @@ import GalleryPage from './pages/GalleryPage';
 import BookingPage from './pages/BookingPage';
 import AdminDashboard from './pages/AdminDashboard';
 import WhatsAppButton from './components/WhatsAppButton';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         </main>
         <Footer />
         <WhatsAppButton />
+        <ScrollToTop />
       </div>
     </Router>
   );
