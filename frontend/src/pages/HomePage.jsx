@@ -153,10 +153,16 @@ const VideoReelSection = ({ heroVideo, nextVideo, isMuted, toggleSound, onNext }
             loop
             muted={isMuted}
             playsInline
+            poster="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop"
             className="w-full h-full object-cover brightness-[0.5] scale-105"
           >
             <source 
-              src={heroVideo?.video_url || "https://cdn.pixabay.com/vimeo/457580662/wedding-51111.mp4?width=1280&hash=1230e7ed87da48fcae5546e8c0fa3d88b4887342"} 
+              src={heroVideo?.video_url || "https://assets.mixkit.co/videos/preview/mixkit-wedding-rings-on-flowers-1044-large.mp4"} 
+              type="video/mp4" 
+            />
+            {/* Redundant Fallback Source */}
+            <source 
+              src="https://coverr.co/video/wedding-reels-clip-1" 
               type="video/mp4" 
             />
           </motion.video>
