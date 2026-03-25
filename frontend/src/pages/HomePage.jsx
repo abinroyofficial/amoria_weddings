@@ -144,7 +144,7 @@ const VideoReelSection = ({ heroVideo, nextVideo, isMuted, toggleSound, onNext }
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.video
-            key={heroVideo?.id}
+            key={heroVideo?.id || 'default-video'}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -155,7 +155,10 @@ const VideoReelSection = ({ heroVideo, nextVideo, isMuted, toggleSound, onNext }
             playsInline
             className="w-full h-full object-cover brightness-[0.5] scale-105"
           >
-            <source src={heroVideo?.video_url} type="video/mp4" />
+            <source 
+              src={heroVideo?.video_url || "https://cdn.pixabay.com/vimeo/457580662/wedding-51111.mp4?width=1280&hash=1230e7ed87da48fcae5546e8c0fa3d88b4887342"} 
+              type="video/mp4" 
+            />
           </motion.video>
         </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-[#0A0A0B]"></div>
