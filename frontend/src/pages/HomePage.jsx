@@ -250,75 +250,55 @@ const VisionWord = ({ word, progress, delay }) => {
   );
 };
 
-const PinnedServices = ({ progress, services }) => {
-  const activeIndex = useTransform(progress, [0.45, 0.6, 0.75, 0.9], [0, 1, 2, 3]);
-  const [currentIdx, setCurrentIdx] = useState(0);
-
-  useMotionValueEvent(activeIndex, "change", (latest) => {
-    let idx = Math.floor(latest);
-    idx = Math.max(0, Math.min(idx, services.length - 1));
-    setCurrentIdx(idx);
-  });
-
+const PinnedServices = ({ services }) => {
   if (services.length === 0) return null;
 
   return (
-    <section className="relative h-[500vh] bg-[#0A0A0B] border-y border-white/5">
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6 overflow-hidden">
-        <AnimatePresence mode="wait">
-          {services.map((s, i) => (
-            currentIdx === i && (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -100 }}
-                transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center pointer-events-none"
-              >
-                <h3 className="text-7xl md:text-[12rem] font-sans font-thin text-white tracking-tighter leading-none mb-12 pointer-events-auto relative z-20">
-                  {s.name}
-                </h3>
+    <div className="relative w-full">
+      {services.map((s, i) => (
+        <section key={i} className="sticky top-0 h-screen w-full bg-[#0A0A0B] border-t border-white/5 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                  className="max-w-2xl pointer-events-auto relative z-20"
-                >
-                  <p className="text-white/40 text-lg md:text-2xl font-light tracking-wide leading-relaxed">
-                    {s.description}
-                  </p>
-                  <Link to="/services" className="mt-12 inline-flex items-center gap-4 text-[11px] uppercase tracking-[0.6em] text-[#E2CF7C] border-b border-[#E2CF7C]/20 pb-2 hover:border-[#E2CF7C] transition-all group">
-                    Explore More <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
-                  </Link>
-                </motion.div>
-              </motion.div>
-            )
-          ))}
-        </AnimatePresence>
-
-        {/* Subtle Background Text */}
-        <AnimatePresence mode="wait">
+          {/* Subtle Background Text */}
           <motion.div
-            key={currentIdx + '-bg'}
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 0.03, scale: 1 }}
-            exit={{ opacity: 0 }}
+            whileInView={{ opacity: 0.03, scale: 1 }}
+            transition={{ duration: 1 }}
+            viewport={{ amount: 0.5 }}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif italic text-white pointer-events-none z-0"
           >
-            {services[currentIdx]?.name.split(" ")[0]}
+            {s.name.split(" ")[0]}
           </motion.div>
-        </AnimatePresence>
 
-        {/* Global Indicator for Services */}
-        <div className="absolute bottom-20 flex gap-4">
-          {services.map((_, i) => (
-            <div key={i} className={`h-[1px] w-12 transition-all duration-700 ${currentIdx === i ? 'bg-[#9D8CCF] w-24' : 'bg-white/10'}`}></div>
-          ))}
-        </div>
-      </div>
-    </section>
+          <div className="relative z-20 flex flex-col items-center justify-center max-w-4xl">
+            <motion.h3
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ amount: 0.8 }}
+              className="text-6xl md:text-[8rem] lg:text-[10rem] font-sans font-thin text-white tracking-tighter leading-[0.9] mb-8"
+            >
+              {s.name}
+            </motion.h3>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              viewport={{ amount: 0.8 }}
+              className="max-w-xl"
+            >
+              <p className="text-white/40 text-base md:text-xl font-light tracking-wide leading-relaxed">
+                {s.description}
+              </p>
+              <Link to="/services" className="mt-8 inline-flex items-center gap-4 text-[10px] uppercase tracking-[0.5em] text-[#E2CF7C] border-b border-[#E2CF7C]/20 pb-2 hover:border-[#E2CF7C] transition-all group">
+                Explore More <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </motion.div>
+          </div>
+
+        </section>
+      ))}
+    </div>
   );
 };
 
