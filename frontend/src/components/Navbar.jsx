@@ -63,7 +63,7 @@ const Navbar = () => {
               to={link.path} 
               className={`nav-link !transition-all duration-500 ${
                 scrolled ? 'text-primary' : 'text-primary/90'
-              } hover:!text-viouler`}
+              } hover:!text-white`}
             >
               {link.name}
             </Link>
