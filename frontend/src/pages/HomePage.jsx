@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence, useMotionValueEvent } from 'framer-motion';
-import { Play, Volume2, VolumeX, Heart, Quote, ChevronDown, Sparkles, ArrowRight, Star } from 'lucide-react';
+import { Play, Volume2, VolumeX, Heart, Quote, ChevronDown, Sparkles, ArrowRight, Star, Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 
@@ -92,36 +92,47 @@ const HomePage = () => {
       {/* Motto Reveal Section (WAC Vision Style) - 200vh */}
       <WACVisionSection progress={scrollYProgress} />
 
-      {/* Services Section (WAC Design Style) - 500vh */}
+      {/* Services Section (WAC Design Style) */}
       <PinnedServices progress={scrollYProgress} services={services} />
 
+      {/* Design / Gallery Section (Stacking Cards) */}
+      <WACGallerySection items={galleryItems.filter(item => !item.is_hero).slice(0, 4)} />
+
       {/* Final Call to Action */}
-      <section className="relative py-80 bg-[#0A0A0B] text-white text-center border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-6 relative z-10">
+      <section className="sticky top-0 h-screen w-full bg-[#0A0A0B] flex flex-col items-center justify-center p-6 text-center overflow-hidden z-30">
+        <div className="relative z-20 flex flex-col items-center justify-center max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            viewport={{ amount: 0.5 }}
+          >
+            <Sparkles className="w-12 h-12 text-[#9D8CCF] mx-auto mb-12 opacity-80 shrink-0" />
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif italic text-white leading-tight mb-16 tracking-wide drop-shadow-xl">
+              Crafting Timeless <br /> Legacies Together.
+            </h2>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            viewport={{ amount: 0.8 }}
+            className="flex flex-col items-center gap-16"
           >
-            <Sparkles className="w-16 h-16 text-[#E2CF7C] mx-auto mb-16 opacity-40 shrink-0" />
-            <p className="text-5xl md:text-7xl font-serif italic leading-tight mb-20 text-white">
-              Crafting Timeless <br /> Legacies Together.
-            </p>
-            <div className="flex flex-col items-center gap-12">
-              <Link to="/booking" className="inline-block text-[11px] font-bold uppercase tracking-[0.8em] text-[#E2CF7C] border-b border-[#E2CF7C]/30 pb-4 hover:text-white hover:border-white transition-all">
-                The Journey Begins
-              </Link>
+            <Link to="/booking" className="inline-block text-[12px] font-bold uppercase tracking-[0.8em] text-[#E2CF7C] border-b border-[#E2CF7C]/30 pb-4 hover:text-white hover:border-white transition-all group">
+              The Journey Begins <ArrowRight size={14} className="inline ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-500" />
+            </Link>
 
-              <button
-                onClick={scrollToTop}
-                className="flex flex-col items-center gap-4 group mt-20"
-              >
-                <div className="w-12 h-12 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/5 transition-all">
-                  <ChevronDown className="rotate-180 text-white/20 group-hover:text-white" size={20} />
-                </div>
-                <span className="text-[9px] uppercase tracking-widest text-white/20 group-hover:text-white font-bold">Back to Top</span>
-              </button>
-            </div>
+            <button
+              onClick={scrollToTop}
+              className="flex flex-col items-center gap-4 group cursor-pointer"
+            >
+              <div className="w-12 h-12 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/5 transition-all">
+                <ChevronDown className="rotate-180 text-white/30 group-hover:text-white transition-all" size={20} />
+              </div>
+              <span className="text-[9px] uppercase tracking-widest text-white/30 group-hover:text-white font-bold transition-all">Back to Top</span>
+            </button>
           </motion.div>
         </div>
       </section>
@@ -256,7 +267,7 @@ const PinnedServices = ({ services }) => {
   return (
     <div className="relative w-full">
       {services.map((s, i) => (
-        <section key={i} className="sticky top-0 h-screen w-full bg-[#0A0A0B] border-t border-white/5 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+        <section key={i} className="sticky top-0 h-screen w-full bg-[#0A0A0B] flex flex-col items-center justify-center p-6 text-center overflow-hidden z-20">
 
           {/* Subtle Background Text */}
           <motion.div
@@ -296,6 +307,67 @@ const PinnedServices = ({ services }) => {
             </motion.div>
           </div>
 
+        </section>
+      ))}
+    </div>
+  );
+};
+
+const WACGallerySection = ({ items }) => {
+  if (items.length === 0) return null;
+
+  return (
+    <div className="relative w-full">
+      <div className="h-40 bg-[#0A0A0B] flex items-center justify-center">
+        <div className="flex items-center gap-6">
+          <div className="w-12 h-[1px] bg-white/10"></div>
+          <span className="text-[10px] uppercase tracking-[0.6em] text-white/40 font-bold">Curated Designs</span>
+          <div className="w-12 h-[1px] bg-white/10"></div>
+        </div>
+      </div>
+      
+      {items.map((item, i) => (
+        <section key={i} className="sticky top-0 h-screen w-full bg-[#0A0A0B] flex flex-col items-center justify-center p-6 text-center overflow-hidden z-25 border-t border-white/5">
+          
+          {/* Background Image with Parallax / Scale */}
+          <motion.div
+             initial={{ scale: 1.1, opacity: 0 }}
+             whileInView={{ scale: 1, opacity: 0.15 }}
+             transition={{ duration: 2, ease: "easeOut" }}
+             className="absolute inset-0 z-0"
+          >
+             <img src={item.image} className="w-full h-full object-cover grayscale" alt="" />
+          </motion.div>
+
+          <div className="relative z-20 flex flex-col items-center justify-center max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+              className="mb-12"
+            >
+               <Camera size={40} className="text-[#9D8CCF] opacity-40 mx-auto" />
+            </motion.div>
+
+            <motion.h3
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-6xl md:text-[9rem] font-serif italic text-white leading-none tracking-tighter mb-10"
+            >
+              {item.title}
+            </motion.h3>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              <span className="text-[10px] uppercase tracking-[0.4em] text-[#E2CF7C] font-bold border border-[#E2CF7C]/20 px-8 py-3 rounded-full bg-black/40 backdrop-blur-md">
+                {item.tag}
+              </span>
+            </motion.div>
+          </div>
         </section>
       ))}
     </div>

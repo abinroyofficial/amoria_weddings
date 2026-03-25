@@ -36,7 +36,7 @@ const GalleryPage = () => {
   const filteredItems = filter === 'all' ? items : items.filter(item => item.tag === filter);
 
   return (
-    <div className="pt-48 pb-32 bg-bg-soft min-h-screen">
+    <div className="pt-48 pb-32 bg-[#0A0A0B] min-h-screen text-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-24">
           <motion.div
@@ -44,12 +44,12 @@ const GalleryPage = () => {
             animate={{ opacity: 1, scale: 1 }}
             className="flex justify-center mb-8"
           >
-            <Camera className="text-secondary w-12 h-12 opacity-30" />
+            <Camera className="text-[#9D8CCF] w-12 h-12 opacity-30" />
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-7xl md:text-8xl font-serif text-primary mb-10 italic leading-tight"
+            className="text-7xl md:text-8xl font-serif text-white mb-10 italic leading-tight"
           >
             The Gallery of Bliss
           </motion.h1>
@@ -60,8 +60,8 @@ const GalleryPage = () => {
                 onClick={() => setFilter(cat)}
                 className={`px-10 py-3 rounded-full border transition-all uppercase tracking-[0.2em] text-[10px] font-bold ${
                   filter === cat 
-                  ? 'bg-primary border-primary text-white shadow-2xl scale-110' 
-                  : 'bg-white/50 border-primary/10 text-primary hover:border-primary/40'
+                  ? 'bg-white border-white text-black shadow-2xl scale-110' 
+                  : 'bg-black/20 border-white/10 text-white/50 hover:border-white/40 hover:text-white'
                 }`}
               >
                 {cat}
@@ -80,16 +80,20 @@ const GalleryPage = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="group relative rounded-[2.5rem] overflow-hidden shadow-premium bg-white"
+                className="group relative rounded-[2.5rem] overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.02)] bg-black/40 border border-white/5"
               >
                 <div className="aspect-[4/5] overflow-hidden">
-                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                   <img 
+                    src={item.image?.startsWith('http') ? item.image : `http://localhost:8000${item.image}`} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 brightness-75 group-hover:brightness-100" 
+                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-10 text-white">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-10 text-white">
                   <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <Heart className="text-secondary mb-4 w-6 h-6" fill="currentColor" />
+                    <Heart className="text-[#E2CF7C] mb-4 w-6 h-6" fill="currentColor" />
                     <h3 className="text-3xl font-serif italic mb-2 tracking-tight">{item.title}</h3>
-                    <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/60">{item.tag}</span>
+                    <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#E2CF7C]">{item.tag}</span>
                   </div>
                 </div>
               </motion.div>
@@ -99,7 +103,7 @@ const GalleryPage = () => {
         
         {loading && (
            <div className="flex justify-center py-40">
-              <div className="w-12 h-12 border-4 border-primary/10 border-t-primary rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-4 border-white/5 border-t-[#E2CF7C] rounded-full animate-spin"></div>
            </div>
         )}
       </div>

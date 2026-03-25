@@ -39,7 +39,7 @@ const ServicesPage = () => {
   ];
 
   return (
-    <div className="bg-white min-h-screen pt-32 transition-colors duration-700">
+    <div className="bg-[#0A0A0B] min-h-screen pt-32 transition-colors duration-700 text-white">
       
       {/* Services Header */}
       <section className="max-w-7xl mx-auto px-6 mb-40 text-center">
@@ -48,11 +48,11 @@ const ServicesPage = () => {
            animate={{ opacity: 1, y: 0 }}
            transition={{ duration: 1 }}
         >
-           <span className="text-secondary font-bold tracking-[0.6em] text-[10px] uppercase mb-10 block">Our Capabilities</span>
-           <h1 className="text-7xl md:text-[9rem] font-serif italic text-primary leading-tight mb-12">
+           <span className="text-[#E2CF7C] font-bold tracking-[0.6em] text-[10px] uppercase mb-10 block">Our Capabilities</span>
+           <h1 className="text-7xl md:text-[9rem] font-serif italic text-white leading-tight mb-12">
              The Collection
            </h1>
-           <div className="w-16 h-px bg-primary/20 mx-auto"></div>
+           <div className="w-16 h-px bg-white/20 mx-auto"></div>
         </motion.div>
       </section>
 
@@ -69,23 +69,23 @@ const ServicesPage = () => {
                className="group"
              >
                 <div className="relative aspect-[16/10] mb-12 rounded-[3.5rem] overflow-hidden shadow-premium group-hover:shadow-2xl transition-all duration-700">
-                   <img src={service.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="" />
-                   <div className="absolute top-10 right-10 flex items-center gap-4 bg-white/80 backdrop-blur-md px-6 py-3 rounded-full shadow-lg">
-                      <Star className="w-3 h-3 text-secondary fill-secondary" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary italic">{service.category}</span>
+                   <img src={service.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 brightness-75 group-hover:brightness-100" alt="" />
+                   <div className="absolute top-10 right-10 flex items-center gap-4 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/5">
+                      <Star className="w-3 h-3 text-[#E2CF7C] fill-[#E2CF7C]" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-white italic">{service.category}</span>
                    </div>
                 </div>
                 
                 <div className="px-6 space-y-8">
-                   <h3 className="text-4xl md:text-5xl font-serif italic text-primary">{service.title}</h3>
-                   <p className="text-text-dim text-lg leading-relaxed max-w-md font-light">
+                   <h3 className="text-4xl md:text-5xl font-serif italic text-white">{service.title}</h3>
+                   <p className="text-white/50 text-lg leading-relaxed max-w-md font-light">
                       {service.desc}
                    </p>
                    
                    <ul className="grid grid-cols-2 gap-4 pt-4">
                       {service.features.map((f, fi) => (
-                        <li key={fi} className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-text-dim">
-                           <div className="w-1.5 h-1.5 bg-secondary rounded-full"></div>
+                        <li key={fi} className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">
+                           <div className="w-1.5 h-1.5 bg-[#9D8CCF] rounded-full"></div>
                            {f}
                         </li>
                       ))}
@@ -93,8 +93,8 @@ const ServicesPage = () => {
 
                    <div className="pt-8">
                       <a href="/booking" className="inline-flex items-center gap-4 group/btn">
-                         <span className="text-xs font-bold uppercase tracking-[0.3em] border-b-2 border-primary/10 pb-1 group-hover/btn:border-primary transition-all">Explore Philosophy</span>
-                         <ArrowRight size={14} className="group-hover/btn:translate-x-2 transition-transform" />
+                         <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#E2CF7C] border-b-2 border-white/10 pb-1 group-hover/btn:border-[#E2CF7C] transition-all">Explore Philosophy</span>
+                         <ArrowRight size={14} className="text-[#E2CF7C] group-hover/btn:translate-x-2 transition-transform" />
                       </a>
                    </div>
                 </div>
@@ -104,18 +104,18 @@ const ServicesPage = () => {
       </section>
 
       {/* Testimonial / Philosophy Footer */}
-      <section className="py-60 bg-bg-soft text-center px-6">
+      <section className="py-60 bg-black/20 border-t border-white/5 text-center px-6">
          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="max-w-4xl mx-auto"
          >
-            <Sparkles className="text-primary w-12 h-12 mx-auto mb-16 opacity-30 animate-pulse" />
-            <h2 className="text-4xl md:text-6xl font-serif italic text-primary leading-tight mb-16">
+            <Sparkles className="text-[#E2CF7C] w-12 h-12 mx-auto mb-16 opacity-30 animate-pulse" />
+            <h2 className="text-4xl md:text-6xl font-serif italic text-white leading-tight mb-16">
                "We orchestrate moments of <br/> profound elegance."
             </h2>
-            <a href="/booking" className="btn-primary">Reserve Your Date</a>
+            <a href="/booking" className="inline-flex items-center gap-4 text-[12px] uppercase tracking-[0.8em] text-[#E2CF7C] border-b border-[#E2CF7C]/30 pb-4 hover:border-white hover:text-white transition-all">Reserve Your Date</a>
          </motion.div>
       </section>
 

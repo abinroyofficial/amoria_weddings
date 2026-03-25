@@ -33,7 +33,7 @@ const Navbar = () => {
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${
       scrolled 
-      ? 'py-4 bg-white/80 backdrop-blur-2xl shadow-premium border-b border-primary/10' 
+      ? 'py-4 bg-[#0A0A0B]/80 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-b border-white/5' 
       : 'py-8 bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
@@ -61,9 +61,7 @@ const Navbar = () => {
             <Link 
               key={link.name} 
               to={link.path} 
-              className={`nav-link !transition-all duration-500 ${
-                scrolled ? 'text-primary' : 'text-primary/90'
-              } hover:!text-white`}
+              className="nav-link !transition-all duration-500 text-white/50 hover:!text-white"
             >
               {link.name}
             </Link>
@@ -72,10 +70,10 @@ const Navbar = () => {
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden p-2 rounded-xl bg-primary/10"
+          className="md:hidden p-2 rounded-xl bg-white/5 border border-white/10"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <X className={scrolled ? 'text-primary' : 'text-white'} /> : <Menu className={scrolled ? 'text-primary' : 'text-white'} />}
+          {isOpen ? <X className="text-white" /> : <Menu className="text-white" />}
         </button>
       </div>
 
@@ -86,14 +84,14 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/95 backdrop-blur-xl border-b border-primary/10 overflow-hidden"
+            className="md:hidden bg-[#0A0A0B]/95 backdrop-blur-xl border-b border-white/5 overflow-hidden"
           >
             <div className="flex flex-col p-8 gap-6">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   to={link.path} 
-                  className="text-xl font-serif text-primary italic"
+                  className="text-2xl font-serif text-white italic"
                 >
                   {link.name}
                 </Link>
