@@ -95,8 +95,6 @@ const HomePage = () => {
       {/* Services Section (WAC Design Style) */}
       <PinnedServices progress={scrollYProgress} services={services} />
 
-      {/* Design / Gallery Section (Stacking Cards) */}
-      <WACGallerySection items={galleryItems.filter(item => !item.is_hero).slice(0, 4)} />
 
       {/* Final Call to Action */}
       <section className="sticky top-0 h-screen w-full bg-[#0A0A0B] flex flex-col items-center justify-center p-6 text-center overflow-hidden z-30">
